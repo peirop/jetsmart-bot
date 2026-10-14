@@ -1,0 +1,22 @@
+name: JetSMART diagnostico
+
+on:
+  workflow_dispatch:   # solo se ejecuta cuando tú lo lanzas
+
+jobs:
+  diagnostico:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: npm install
+      - run: npx playwright install --with-deps chromium
+      - run: node diagnostico.js
+        env:
+          JS_USER: ${{ secrets.JS_USER }}
+          JS_PASS: ${{ secrets.JS_PASS }}
+          TG_TOKEN: ${{ secrets.TG_TOKEN }}
+          TG_CHAT_ID: ${{ secrets.TG_CHAT_ID }}
